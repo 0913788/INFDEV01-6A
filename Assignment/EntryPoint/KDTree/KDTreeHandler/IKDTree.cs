@@ -8,6 +8,7 @@ namespace EntryPoint
 {
     interface IKDTreeHandler<T>
     {
+        ITree<T> CreateTree(IEnumerable<T> list);
 
         ITree<T> Insert(ITree<T> tree, T value, bool XAxis = true);
 

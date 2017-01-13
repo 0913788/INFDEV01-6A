@@ -9,63 +9,63 @@ namespace EntryPoint
 {
     class Merge
     {
-        Vector2 _baseValue;
+        Vector2 BaseValue;
 
         public Merge(Vector2 baseValue)
         {
-            _baseValue = baseValue;
+            BaseValue = baseValue;
         }
 
         private bool Compare(Vector2 LeftSideValue, Vector2 RightSideValue)
         { 
-            double LeftDistance = Math.Sqrt(Math.Pow((_baseValue.X - LeftSideValue.X), 2) + Math.Pow((_baseValue.Y - LeftSideValue.Y), 2));
-            double RightDistance = Math.Sqrt(Math.Pow((_baseValue.X - RightSideValue.X), 2) + Math.Pow((_baseValue.Y - RightSideValue.Y), 2));
+            double LeftDistance = Math.Sqrt(Math.Pow((BaseValue.X - LeftSideValue.X), 2) + Math.Pow((BaseValue.Y - LeftSideValue.Y), 2));
+            double RightDistance = Math.Sqrt(Math.Pow((BaseValue.X - RightSideValue.X), 2) + Math.Pow((BaseValue.Y - RightSideValue.Y), 2));
             return LeftDistance <= RightDistance;
         }
 
         public void Run(Vector2[] data, int left, int mid, int right)
         {
             int i, j, k;
-            int n1 = mid - left + 1;
-            int n2 = right - mid;
-            Vector2[] L = new Vector2[n1];
-            Vector2[] R = new Vector2[n2];
+            int leftArrayLen = mid - left + 1;
+            int rightArrayLen = right - mid;
+            Vector2[] leftArray = new Vector2[leftArrayLen];
+            Vector2[] rightArray = new Vector2[rightArrayLen];
 
-            for (i = 0; i < n1; i++)
-                L[i] = data[left + i];
+            for (i = 0; i < leftArrayLen; i++)
+                leftArray[i] = data[left + i];
 
-            for (j = 0; j < n2; j++)
-                R[j] = data[mid + 1 + j];
+            for (j = 0; j < rightArrayLen; j++)
+                rightArray[j] = data[mid + 1 + j];
 
             i = 0;
             j = 0;
             k = left;
 
-            while (i < n1 && j < n2)
+            while (i < leftArrayLen && j < rightArrayLen)
             {
-                if (Compare(L[i],R[j]))
+                if (Compare(leftArray[i],rightArray[j]))
                 {
-                    data[k] = L[i];
+                    data[k] = leftArray[i];
                     i++;
                 }
                 else
                 {
-                    data[k] = R[j];
+                    data[k] = rightArray[j];
                     j++;
                 }
                 k++;
             }
 
-            while (i < n1)
+            while (i < leftArrayLen)
             {
-                data[k] = L[i];
+                data[k] = leftArray[i];
                 i++;
                 k++;
             }
 
-            while (j < n2)
+            while (j < rightArrayLen)
             {
-                data[k] = R[j];
+                data[k] = rightArray[j];
                 j++;
                 k++;
             }

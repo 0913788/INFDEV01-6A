@@ -41,10 +41,9 @@ namespace EntryPoint
 
     private static IEnumerable<Vector2> SortSpecialBuildingsByDistance(Vector2 house, IEnumerable<Vector2> specialBuildings)
     {
-        Vector2[] sB = specialBuildings.ToArray();
-        new MergeSort().Run(sB, 0, specialBuildings.Count()-1, house);
-        IEnumerable<Vector2> x = specialBuildings.OrderBy(v => Vector2.Distance(v, house));
-        return sB;
+        Vector2[] ReturnArray = specialBuildings.ToArray();
+        new MergeSort(house).Run(ReturnArray, 0, specialBuildings.Count()-1);
+        return ReturnArray;
     }
 
     private static IEnumerable<IEnumerable<Vector2>> FindSpecialBuildingsWithinDistanceFromHouse(
@@ -53,8 +52,8 @@ namespace EntryPoint
     {
             List<Vector2> tmpList = new List<Vector2>();
             List<List<Vector2>> endList = new List<List<Vector2>>();
-            Vector2KDTreeHandler handler = new Vector2KDTreeHandler();
-            ITree<Vector2> tree = handler.CreateTree(specialBuildings);
+            Vector2KDTreeHandler Vector2TreeHandler = new Vector2KDTreeHandler();
+            ITree<Vector2> tree = Vector2TreeHandler.CreateTree(specialBuildings);
 
             foreach(Tuple<Vector2, float> house in housesAndDistances)
             {
@@ -62,7 +61,7 @@ namespace EntryPoint
                                                                  new Vector2(house.Item1.X + house.Item2, house.Item1.Y + house.Item2), 
                                                                  new Vector2(house.Item1.X + house.Item2, house.Item1.Y - house.Item2), 
                                                                  new Vector2(house.Item1.X - house.Item2, house.Item1.Y - house.Item2));
-                foreach (Vector2 vector in handler.RangeSearch(window, tree, true).ToList())
+                foreach (Vector2 vector in Vector2TreeHandler.RangeSearch(window, tree, true).ToList())
                 {
                     if (Math.Sqrt(Math.Pow((house.Item1.X - vector.X), 2) + Math.Pow((house.Item1.Y - vector.Y), 2)) <= house.Item2)
                     {
@@ -82,7 +81,6 @@ namespace EntryPoint
             Vertex<Vector2> CurrentVertex, EndVertex, startingVertex, destinationVertex;
             startingVertex = new Vertex<Vector2>(startingBuilding);
             destinationVertex = new Vertex<Vector2>(destinationBuilding);
-            //destinationVertex = new Vertex<Vector2>(new Vector2(20,20));
 
             vertexList.Add(startingVertex);
             vertexList.Add(destinationVertex);

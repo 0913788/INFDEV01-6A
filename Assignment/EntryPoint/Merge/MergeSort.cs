@@ -9,14 +9,20 @@ namespace EntryPoint
 {
     class MergeSort
     {
-        public void Run(Vector2[] Array, int p, int r, Vector2 _baseValue)
+        Vector2 BaseValue;
+        
+        public MergeSort(Vector2 baseValue)
         {
-            if (p < r)
+            BaseValue = baseValue;
+        }
+        public void Run(Vector2[] Array, int left, int right)
+        {
+            if (left < right)
             {
-                int q = (p + r) / 2;
-                new MergeSort().Run(Array, p, q, _baseValue);
-                new MergeSort().Run(Array, q + 1, r, _baseValue);
-                new Merge(_baseValue).Run(Array, p, q, r);
+                int mid = (left + right) / 2;
+                new MergeSort(BaseValue).Run(Array, left, mid);
+                new MergeSort(BaseValue).Run(Array, mid + 1, right);
+                new Merge(BaseValue).Run(Array, left, mid, right);
             }
         }
     }
